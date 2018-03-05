@@ -7,7 +7,7 @@
 	var storageData = {};
 	appz.storage = {
 		set: function(id, val){ return storageData[id] = val; },
-		get: function(id){ storageData.hasOwnProperty(id) ? storageData[id] : undefined; },
+		get: function(id){ return storageData.hasOwnProperty(id) ? storageData[id] : undefined; },
 		remove: function(id){ return delete storageData[id]; },
 		clear: function(){ return storageData = {}; }
 	};
