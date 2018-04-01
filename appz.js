@@ -85,10 +85,13 @@
 			decimal = typeof(decimal) == 'undefined' ? 2 : decimal
 			thousandSep = typeof(thousandSep) == 'undefined' ? ',' : thousandSep;
 
+			var _n = this.toFixed(decimal).split('.');
 			
-			return this.toFixed(decimal).replace(/./g, function(c, i, a) {
+			_n[0] = _n[0].replace(/./g, function(c, i, a) {
 			    return i && c !== "." && ((a.length - i) % 3 === 0) ? thousandSep + c : c;
 			});
+			
+			return _n.join('.');
 		}
 
 		Number.prototype.toDecimal = function() {
