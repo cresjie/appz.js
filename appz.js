@@ -7,7 +7,7 @@
 	var storageData = {};
 	appz.storage = {
 		set: function(id, val){ return storageData[id] = val; },
-		get: function(id){ return storageData.hasOwnProperty(id) ? storageData[id] : undefined; },
+		get: function(id, _default){ return storageData.hasOwnProperty(id) ? storageData[id] : (_default||undefined); },
 		remove: function(id){ return delete storageData[id]; },
 		clear: function(){ return storageData = {}; }
 	};
@@ -60,5 +60,47 @@
 		promise.catch(function(){});
 
 		return promise;
+	}
+
+	appz.polyfills = function() {
+		if( !Array.prototype.last ) {
+			Object.defineProperty(Array.prototype, 'last', {
+				value: function(){
+					if( this.length ) {
+						return this[ this.length - 1];
+					}
+				}
+			});
+		}
+
+		if( !Array.prototype.first ) {
+			Object.defineProperty(Array.prototype, 'first', {
+				value: function(){
+					return this[0];
+				}
+			});
+		}
+
+		Number.prototype.numberFormat = function(decimal, thousandSep) {
+			decimal = typeof(decimal) == 'undefined' ? 2 : decimal
+			thousandSep = typeof(thousandSep) == 'undefined' ? ',' : thousandSep;
+
+			
+			return this.toFixed(decimal).replace(/./g, function(c, i, a) {
+			    return i && c !== "." && ((a.length - i) % 3 === 0) ? thousandSep + c : c;
+			});
+		}
+
+		Number.prototype.toDecimal = function() {
+			return parseFloat(this);
+		}
+
+		String.prototype.capitalize = function(){
+			return this.replace(/\b\w/g, function(l){ return l.toUpperCase() })
+		}
+
+		String.prototype.toDecimal = function() {
+			return parseFloat(this);
+		}
 	}
 })();
