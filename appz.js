@@ -81,6 +81,24 @@
 			});
 		}
 
+		if( !Array.prototype.contains ) {
+			Object.defineProperty(Array.prototype, 'contains', {
+				value: function(){
+					var args = arguments;
+					return this.some(function(x){
+						if( x.constructor == Object ) {
+							if( args.length <= 1 ) {
+								console.warn('Parameter key, value are required');
+								return false;
+							}
+							return x[args[0]] == args[1] ;
+						}
+						return x == args[0];
+					});
+				}
+			});
+		}
+
 		Number.prototype.numberFormat = function(decimal, thousandSep) {
 			decimal = typeof(decimal) == 'undefined' ? 2 : decimal
 			thousandSep = typeof(thousandSep) == 'undefined' ? ',' : thousandSep;
@@ -104,6 +122,10 @@
 
 		String.prototype.toDecimal = function() {
 			return parseFloat(this);
+		}
+
+		String.prototype.numberFormat  = function(decimal, thousandSep) {
+			return this.toDecimal().numberFormat(decimal, thousandSep)
 		}
 	}
 })();
